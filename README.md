@@ -12,7 +12,6 @@ This application implements a semantic and hybrid search system for the Amazon E
    Install the following libraries using pip:
 '''
 pip install pandas numpy sentence-transformers faiss-cpu scikit-learn matplotlib rank_bm25
-
 '''
 
 3. **Download Files**
