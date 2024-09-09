@@ -10,9 +10,9 @@ This application implements a semantic and hybrid search system for the Amazon E
 
 2. **Required Libraries**
    Install the following libraries using pip:
-'''
+```
 pip install pandas numpy sentence-transformers faiss-cpu scikit-learn matplotlib rank_bm25
-'''
+```
 
 3. **Download Files**
 - Download the `amzESCI_searchApp_final.py` script
@@ -20,7 +20,7 @@ pip install pandas numpy sentence-transformers faiss-cpu scikit-learn matplotlib
 
 4. **File Structure**
 Ensure your directory structure looks like this:
-'''
+
 your_project_folder/
 ├── amzESCI_searchApp_final.py
 └── allminilmL6_hybrid_1pct/
