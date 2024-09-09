@@ -20,7 +20,7 @@ pip install pandas numpy sentence-transformers faiss-cpu scikit-learn matplotlib
 
 4. **File Structure**
 Ensure your directory structure looks like this:
-
+```
 your_project_folder/
 ├── amzESCI_searchApp_final.py
 └── allminilmL6_hybrid_1pct/
@@ -28,6 +28,7 @@ your_project_folder/
 ├── 1pct_embeddings.pkl
 ├── 1pct_faiss_index.pkl
 └── 1pct_bm25_index.pkl
+```
 
 ## Usage
 
