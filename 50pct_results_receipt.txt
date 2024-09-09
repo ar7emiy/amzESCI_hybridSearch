@@ -1,0 +1,39 @@
+Sample Size: 10.0%
+
+Data Inspection Results:
+
+Data Inspection:
+Total judgements: 301565
+Unique products: 262505
+Unique queries: 14922
+Product embeddings shape: (262505, 384)
+Query embeddings shape: (14922, 384)
+
+Distribution of ESCI labels:
+E    0.436171
+S    0.349407
+I    0.168534
+C    0.045887
+
+Sample query and its top 5 results:
+Query: !awnmower tires without rims
+Top 5 results:
+1. MaxAuto 2 Pcs 16x6.50-8 Lawn Mower Tire for Garden Tractors Ridings, 4PR, Tubeless (Product ID: B077QMNXTS)
+2. Zipp 404 NSW Carbon Wheel - Tubeless - 2020 Black, XDR, QR (Product ID: B08KBNCMNP)
+3. 4.10-6 Tire&Tube 6" rim for Kids ATV Go-Kart Garden Rototiller Snow Blower (Product ID: B07HMV75L6)
+4. none brand Newest Easy Snow Tire Chains Heavy Duty for Truck Pickup SUV Car Van ATV Jeep Honda Toyota Nissan VW Ford Mercede Benz BMW Tyre, Universal Fit Metal Steel Traction Anti-Skid (Product ID: B07JNN2K4Q)
+5. 20" Inch 6x135 Wheel Rim XD XD820 Grenade 20x9 +18mm Black Milled Blue (Product ID: B084LY5P9Y)
+
+
+Evaluation Results:
+mrr: 0.5594
+hits@1: 0.4603
+hits@5: 0.6914
+hits@10: 0.7679
+ndcg@10: 0.5922
+map: 0.5015
+precision@5: 0.3654
+recall@10: 0.7679
+
+Vector Index Analysis:
+{'avg_distance': 0.12289133, 'std_distance': 0.11371129, 'visualization': 'embeddings_visualization.png'}

@@ -1,0 +1,50 @@
+Sample Size: 1.0%
+
+Data Inspection Results:
+
+Data Inspection:
+Total judgements: 6120
+Unique products: 6090
+Unique queries: 298
+Product embeddings shape: (6090, 384)
+Query embeddings shape: (298, 384)
+
+Distribution of ESCI labels:
+E    0.442647
+S    0.358333
+I    0.158660
+C    0.040359
+
+Sample query and its top 5 results:
+Query: .5 lead b ain
+Top 5 results:
+1. Pentel Ain Pencil Leads 0.5mm HB, 40 Leads X 5 Pack/total 200 Leads (Japan Import) [Komainu-Dou Original Package] (Product ID: B00N99GWZ6)
+2. Pentel Ain Pencil Leads 0.5mm 4B, 40 Leads X 5 Pack/total 200 Leads (Japan Import) [Komainu-Dou Original Package] (Product ID: B00PQY8XRC)
+3. Pentel Ain Pencil Leads 0.5mm 2B, 40 Leads X 5 Pack/total 200 Leads (Japan Import) [Komainu-Dou Original Package] (Product ID: B00MIIFX8G)
+4. Pentel Ain Stein Mechanical Pencil Lead, 0.5mm B, 40 Leads x 3 Pack (XC275B-3P) (Product ID: B004EHYH0Y)
+5. Pentel Ain Stein Mechanical Pencil Lead, 0.5mm B,2B,3B,4B (40 Leads) 1 Each + Original 5 Colors Sticky Notes (Product ID: B01HODH9QI)
+
+
+Semantic Search Evaluation Results:
+mrr: 0.8405
+hits@1: 0.7752
+hits@5: 0.9262
+hits@10: 0.9497
+ndcg@10: 0.8592
+map: 0.8003
+precision@5: 0.7255
+recall@10: 0.9497
+
+
+Hybrid Search Evaluation Results:
+mrr: 0.8343
+hits@1: 0.7617
+hits@5: 0.9262
+hits@10: 0.9497
+ndcg@10: 0.8587
+map: 0.8020
+precision@5: 0.7248
+recall@10: 0.9497
+
+Vector Index Analysis:
+{'avg_distance': 0.1312009, 'std_distance': 0.11693758, 'visualization': 'embeddings_visualization.png'}
