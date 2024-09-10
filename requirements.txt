@@ -1,0 +1,13 @@
+pandas
+numpy
+scikit-learn
+sentence-transformers
+faiss-cpu
+tqdm
+rank-bm25
+lightgbm
+joblib
+matplotlib
+flask
+pyarrow
+fastparquet
