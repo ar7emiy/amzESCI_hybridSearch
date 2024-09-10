@@ -1,0 +1,33 @@
+Sample Size: 50.0%
+
+Data Inspection Results:
+
+Data Inspection:
+Total judgements: 59941
+Unique products: 57668
+Unique queries: 2984
+Product embeddings shape: (57668, 384)
+Query embeddings shape: (2984, 384)
+
+Distribution of ESCI labels:
+esci_label
+E    0.439165
+S    0.349660
+I    0.167715
+C    0.043459
+
+Sample query and its top 5 results:
+Query: #1 black natural hair dye without ammonia or peroxide
+Top 5 results:
+1. 12 Colors Glow in The Dark Pigment Powder Epoxy Resin Pigment 20g/0.7oz Each Jar - Luminous Powder Safe Non-Toxic for Slime,Nails,Acrylic Paint,Halloween,Fine Art and DIY Crafts (Product ID: B075WVHM53)
+2. Garnier Olia Oil Powered Permanent Hair Color, 8.5.03 Medium Pearl Blonde (Packaging May Vary) (Product ID: B00PFEFR8Q)
+3. 100+ Purple Bamboo Seeds for Planting, Grow Purple Bamboo, Privacy Screen, Plants Seeds (Product ID: B09BN7XFDG)
+4. Revlon Total Color Permanent Hair Color, Clean and Vegan, 100% Gray Coverage Hair Dye, 30 Darkest Brown, 3.5 oz (Product ID: B07YDZQDK1)
+5. Beetles Neon Gel Nail Polish Set, Neon Orange Hot Pink Blue Yellow Green Purple 6 Colors Soak Off LED Gel Nail Kit, 7.3ml Each Bottle (Product ID: B07SZSGRWW)
+
+
+Evaluation Results:
+mrr: 0.0980
+hits@1: 0.0647
+hits@5: 0.1374
+hits@10: 0.1967

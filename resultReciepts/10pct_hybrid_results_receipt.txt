@@ -1,0 +1,50 @@
+Sample Size: 10.0%
+
+Data Inspection Results:
+
+Data Inspection:
+Total judgements: 59941
+Unique products: 57668
+Unique queries: 2984
+Product embeddings shape: (57668, 384)
+Query embeddings shape: (2984, 384)
+
+Distribution of ESCI labels:
+E    0.439165
+S    0.349660
+I    0.167715
+C    0.043459
+
+Sample query and its top 5 results:
+Query: #1 black natural hair dye without ammonia or peroxide
+Top 5 results:
+1. Clairol Professional Beautiful Advanced Gray Solutions 1a Midnight Black, 3 oz (Product ID: B07SBTDXV4)
+2. Indus Valley Damage Free Permanent Gel Hair Color (Black 1.0) (Product ID: B07B9Y13C6)
+3. SoftSheen-Carson Dark & Natural Hair Color for Men 5 Minutes, Natural Looking Gray Coverage for Up To 6 Weeks, Shampoo-in Permanent Hair Dye, Jet Black, Ammonia Free, Natural Black (Product ID: B0046NEYB8)
+4. Just Jaivik 100% Organic Indigo Powder - 227 gms / 1/2 LB Pound / 08 Oz - Indigofera Tinctoria- A 100% Organic Hair Dye - Color your hair dark brown to black with Henna (Product ID: B01IPA7PUY)
+5. Clairol Natural Instincts Semi-Permanent Hair Dye for Men, M19 Black Hair Color, 3 Count (Product ID: B001E5ED30)
+
+
+Semantic Search Evaluation Results:
+mrr: 0.7024
+hits@1: 0.6139
+hits@5: 0.8190
+hits@10: 0.8706
+ndcg@10: 0.7244
+map: 0.6388
+precision@5: 0.5192
+recall@10: 0.8706
+
+
+Hybrid Search Evaluation Results:
+mrr: 0.7169
+hits@1: 0.6337
+hits@5: 0.8308
+hits@10: 0.8706
+ndcg@10: 0.7418
+map: 0.6673
+precision@5: 0.5336
+recall@10: 0.8706
+
+Vector Index Analysis:
+{'avg_distance': 0.12123653, 'std_distance': 0.11314547, 'visualization': 'embeddings_visualization.png'}

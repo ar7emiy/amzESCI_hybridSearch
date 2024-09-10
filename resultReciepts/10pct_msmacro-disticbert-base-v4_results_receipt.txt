@@ -1,0 +1,33 @@
+Sample Size: 10.0%
+
+Data Inspection Results:
+
+Data Inspection:
+Total judgements: 59941
+Unique products: 57668
+Unique queries: 2984
+Product embeddings shape: (57668, 768)
+Query embeddings shape: (2984, 768)
+
+Distribution of ESCI labels:
+esci_label
+E    0.439165
+S    0.349660
+I    0.167715
+C    0.043459
+
+Sample query and its top 5 results:
+Query: #1 black natural hair dye without ammonia or peroxide
+Top 5 results:
+1. Just Jaivik 100% Organic Indigo Powder - 227 gms / 1/2 LB Pound / 08 Oz - Indigofera Tinctoria- A 100% Organic Hair Dye - Color your hair dark brown to black with Henna (Product ID: B01IPA7PUY)
+2. 100% Natural Indigo Powder for Hair (227g / (1/2 lb) / 8 ounces) Indigofera tinctoria to color your hair brown to black (Product ID: B01ERHRMR0)
+3. Clairol Professional Beautiful Advanced Gray Solutions 1a Midnight Black, 3 oz (Product ID: B07SBTDXV4)
+4. Davis Finest Henna Indigo Powder Combo Pack for Natural Hair Dye PPD-Free Color - 100g Pure Henna Powder + 100g Natural Indigo for Light, Medium, Dark Brown, Black/Jet Black Hair/Beard Dye Color-200g (Product ID: B07CKFPLQV)
+5. Garnier Olia Ammonia-Free Brilliant Color Oil-Rich Permanent Hair Color, 6.0 Light Brown (Pack of 1) Brown Hair Dye (Packaging May Vary) (Product ID: B00BP8OQ4W)
+
+
+Evaluation Results:
+mrr: 0.6481
+hits@1: 0.5503
+hits@5: 0.7765
+hits@10: 0.8284
