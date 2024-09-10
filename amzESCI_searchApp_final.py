@@ -2,23 +2,22 @@ import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import faiss
-#import gc
 import os
 import pickle
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
-#import re
 from rank_bm25 import BM25Okapi
-#import joblib
+from multiprocessing import Pool, cpu_count
+from tqdm import tqdm
 
 def load_and_preprocess_data(sample_size=1, random_state=42):
     """
     Loads the shopping queries and product datasets, filters by conditions, merges the datasets, and optionally samples the data.
     We filter to use the small version of dataset with US locale only, as well as random (non-stratified) sampling for faster embedding and indexing.
     
-    P.S. removing special characters and puntuation lead to worse semantic search results (r'[^a-zA-Z0-9\s])
+    P.S. removing special characters and puntuation lead to worse semantic search results
     Using PCA to reduce dimentions also lead to worse semantic results
     Loading chunks disabled as there is no memory contraint assumed
     
@@ -59,6 +58,13 @@ def load_and_preprocess_data(sample_size=1, random_state=42):
     
     return df
 
+def process_product_batch(batch, model, max_length=512):
+    texts = [
+        f"{row['product_title']} {row['product_description']} {row['product_bullet_point']}"[:max_length]
+        for _, row in batch.iterrows()
+    ]
+    return model.encode(texts, show_progress_bar=False)
+
 def process_dataframe(df, model, batch_size=32):
     """
     This function encodes both the queries and products into embeddings using a pre-trained SentenceTransformer model.
@@ -80,8 +86,15 @@ def process_dataframe(df, model, batch_size=32):
     query_embeddings = model.encode(unique_queries.tolist(), batch_size=batch_size, show_progress_bar=True)
     
     print("Encoding products...")
-    product_texts = unique_products.apply(lambda row: f"{row['product_title']} {row['product_description']} {row['product_bullet_point']}", axis=1).tolist()
-    product_embeddings = model.encode(product_texts, batch_size=batch_size, show_progress_bar=True)
+    num_products = len(unique_products)
+    product_embeddings = []
+    
+    for i in tqdm(range(0, num_products, batch_size), desc="Processing products"):
+        batch = unique_products.iloc[i:i+batch_size]
+        batch_embeddings = process_product_batch(batch, model)
+        product_embeddings.extend(batch_embeddings)
+    
+    product_embeddings = np.array(product_embeddings)
     
     return query_embeddings, product_embeddings, unique_queries, unique_products
 
@@ -298,6 +311,23 @@ def inspect_data(df, unique_products, unique_queries, product_embeddings, query_
 def preprocess_text(text):
     return ''.join(char.lower() for char in text if char.isalnum() or char.isspace())
 
+def process_batch(args):
+    bm25, batch = args
+    return {query: bm25.get_scores(preprocess_text(query).split()) for query in batch}
+
+def precompute_bm25_scores_parallel(bm25, queries, batch_size=1000):
+    batches = [queries[i:i+batch_size] for i in range(0, len(queries), batch_size)]
+    
+    with Pool(cpu_count()) as pool:
+        results = list(tqdm(pool.imap(process_batch, [(bm25, batch) for batch in batches]), 
+                            total=len(batches), desc="Computing BM25 scores"))
+    
+    scores = {}
+    for batch_result in results:
+        scores.update(batch_result)
+    
+    return scores
+
 def build_bm25_index(corpus):
     """
     Builds a BM25 index from a corpus of product descriptions.
@@ -315,44 +345,22 @@ def build_bm25_index(corpus):
     tokenized_corpus = [doc.split() for doc in preprocessed_corpus]
     return BM25Okapi(tokenized_corpus)
 
-def hybrid_search(query, bm25, faiss_index, product_embeddings, query_embedding, products, alpha=0.5, k=10):
-    """
-    Perform a hybrid search combining BM25 and semantic search scores.
-
-    Parameters:
-    query (str): The search query.
-    bm25 (BM25Okapi): The BM25 index.
-    faiss_index (faiss.IndexFlatIP): The FAISS index.
-    product_embeddings (np.ndarray): The product embeddings.
-    query_embedding (np.ndarray): The query embedding.
-    products (list): List of product information.
-    alpha (float): Weight for combining BM25 and semantic scores.
-    k (int): Number of top results to return.
-
-    Returns:
-    list: Indices of the top k results.
-    """
-    # Preprocess the query text
-    preprocessed_query = preprocess_text(query)
-    
-    # Get BM25 scores for the query
-    bm25_scores = bm25.get_scores(preprocessed_query.split())
-    
-    # Perform semantic search using FAISS
+def process_hybrid_query(args):
+    query, query_embedding, bm25_scores, faiss_index, products, alpha, k = args
+    bm25_scores_for_query = bm25_scores[query]
     semantic_distances, semantic_indices = faiss_index.search(query_embedding.reshape(1, -1), k)
-    
-    # Normalize semantic scores
     semantic_scores = 1 - (semantic_distances[0] / np.max(semantic_distances[0]))
-    
-    # Combine BM25 and semantic scores
-    combined_scores = alpha * bm25_scores[semantic_indices[0]] + (1 - alpha) * semantic_scores
-    
-    # Sort indices based on combined scores
+    combined_scores = alpha * bm25_scores_for_query[semantic_indices[0]] + (1 - alpha) * semantic_scores
     sorted_indices = np.argsort(combined_scores)[::-1]
-    
-    # Return the sorted indices of the top k results
-    return [semantic_indices[0][i] for i in sorted_indices]
+    return [products[semantic_indices[0][i]]['product_id'] for i in sorted_indices]
 
+def hybrid_search_parallel(queries, bm25_scores, faiss_index, product_embeddings, query_embeddings, products, alpha=0.5, k=10):
+    with Pool(cpu_count()) as pool:
+        results = list(tqdm(pool.imap(process_hybrid_query, 
+                                      [(query, query_embedding, bm25_scores, faiss_index, products, alpha, k) 
+                                       for query, query_embedding in zip(queries, query_embeddings)]), 
+                            total=len(queries), desc="Performing hybrid search"))
+    return results
 
 #############################################
 # saving for reusability and extra testing
@@ -399,11 +407,10 @@ def analyze_vector_index(embeddings, labels, n_samples=1000):
     }
 
 
-
 def main():
-    sample_size = 0.01 #set as default for processing speef
+    sample_size = 0.01  # adjust this based on your memory constraints
     folder_path = 'allminilml6_hybridtest/'
-    dt_size = '1pct_'
+    dt_size = '1_1pct_'
     model_name = "all-MiniLM-L6-v2"
     
     os.makedirs(folder_path, exist_ok=True)
@@ -412,6 +419,7 @@ def main():
     embeddings_path = os.path.join(folder_path, f"{dt_size}embeddings.pkl")
     faiss_index_path = os.path.join(folder_path, f"{dt_size}faiss_index.pkl")
     bm25_index_path = os.path.join(folder_path, f"{dt_size}bm25_index.pkl")
+    bm25_scores_path = os.path.join(folder_path, f"{dt_size}bm25_scores.pkl")
 
     try:
         if os.path.exists(full_df_path):
@@ -458,14 +466,21 @@ def main():
             bm25 = build_bm25_index(product_texts)
             save_checkpoint(bm25, bm25_index_path)
 
+        if os.path.exists(bm25_scores_path):
+            print("Loading pre-computed BM25 scores from checkpoint...")
+            bm25_scores = load_checkpoint(bm25_scores_path)
+        else:
+            print("Pre-computing BM25 scores...")
+            bm25_scores = precompute_bm25_scores_parallel(bm25, unique_queries, batch_size=1000)
+            save_checkpoint(bm25_scores, bm25_scores_path)
+
+        print("Performing hybrid search...")
+        hybrid_results = hybrid_search_parallel(unique_queries, bm25_scores, product_index, 
+                                                product_embeddings, query_embeddings, 
+                                                unique_products.to_dict('records'))
         print("Performing semantic search...")
         semantic_distances, semantic_indices = search_index(product_index, query_embeddings, k=10)
 
-        print("Performing hybrid search...")
-        hybrid_results = []
-        for query, query_embedding in zip(unique_queries, query_embeddings):
-            results = hybrid_search(query, bm25, product_index, product_embeddings, query_embedding, unique_products.to_dict('records'))
-            hybrid_results.append(results)
 
         inspection_results = inspect_data(df, unique_products, unique_queries, product_embeddings, query_embeddings, semantic_indices)
 
