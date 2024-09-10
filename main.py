@@ -20,7 +20,7 @@ from final import (
 
 def main():
     sample_size = 0.01  # adjust this based on your memory constraints
-    folder_path = 'allminilml6_hybridtest/'
+    folder_path = 'data/1pct_MiniLM_hybridS/'
     dt_size = '1pct_'
     model_name = "all-MiniLM-L6-v2"
     
