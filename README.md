@@ -39,16 +39,17 @@ root/
 1. **Default Run (1% Sample Size)**
 To run the script with the default 1% sample size:
 
-This will use the pre-processed data in the `allminilmL6_hybrid_1pct` folder.
+This will use the pre-processed data in the `data/1pct_MiniLM_hybridS/` folder.
 
 2. **Custom Sample Size**
 If you want to run the script with a different sample size:
-- Open `amzESCI_searchApp_final.py` in a text editor
-- Locate the `main()` function
+- Open `main.py` in a text editor
 - Modify the `sample_size` variable (e.g., `sample_size = 0.05` for 5%)
 - Save the file and run it as in step 1
 
 Note: Running with a different sample size will require reprocessing the data, which may take longer and require more computational resources.
+
+*. You may also run code within otherCodeFiles/ like amzESCI_searchApp_final.py file following the same steps, otherwise you may also run via the ipynb notebook.
 
 ## Features
 
