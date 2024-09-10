@@ -10,6 +10,7 @@ Product embeddings shape: (6090, 384)
 Query embeddings shape: (298, 384)
 
 Distribution of ESCI labels:
+esci_label
 E    0.442647
 S    0.358333
 I    0.158660
@@ -26,25 +27,25 @@ Top 5 results:
 
 
 Semantic Search Evaluation Results:
-mrr: 0.8405
-hits@1: 0.7752
-hits@5: 0.9262
-hits@10: 0.9497
-ndcg@10: 0.8592
-map: 0.8003
-precision@5: 0.7255
-recall@10: 0.9497
+mrr: 0.8595
+hits@1: 0.8020
+hits@5: 0.9329
+hits@10: 0.9530
+ndcg@10: 0.8727
+map: 0.8171
+precision@5: 0.7396
+recall@10: 0.9530
 
 
 Hybrid Search Evaluation Results:
-mrr: 0.8343
-hits@1: 0.7617
-hits@5: 0.9262
-hits@10: 0.9497
-ndcg@10: 0.8587
-map: 0.8020
-precision@5: 0.7248
-recall@10: 0.9497
+mrr: 0.8519
+hits@1: 0.7953
+hits@5: 0.9295
+hits@10: 0.9530
+ndcg@10: 0.8678
+map: 0.8132
+precision@5: 0.7376
+recall@10: 0.9530
 
 Vector Index Analysis:
-{'avg_distance': 0.1312009, 'std_distance': 0.11693758, 'visualization': 'embeddings_visualization.png'}
+{'avg_distance': 0.12140928, 'std_distance': 0.110006966, 'visualization': 'embeddings_visualization.png'}
